@@ -1,0 +1,95 @@
+﻿#include "pch.h"
+#include "Palet.h"
+#include "App.h"
+#include "Ground.h"
+
+Pallet::Pallet()
+{
+	m_palletSpeed = 0;
+	m_pEntity = nullptr;
+	m_dir.x = 0;
+	m_dir.y = 0;
+	m_dir.z = 0;
+}
+
+Pallet::~Pallet()
+{
+	
+}
+
+void Pallet::Create(cpu_mesh* pMesh, cpu_material* pMaterial)
+{
+	m_pEntity = cpuEngine.CreateEntity();
+	m_pEntity->pMesh = pMesh;
+	m_pEntity->pMaterial = pMaterial;
+
+}
+
+void Pallet::Update(float dt)
+{
+	// debug
+	if (cpuInput.IsDown())
+		m_palletSpeed += 2.f;
+	
+	if (cpuInput.IsUp()) {
+		m_dir.z = 1;
+		m_dir.x = 1;
+	}
+
+	// base moves
+	m_pEntity->transform.pos.x += m_palletSpeed * dt * m_dir.x;
+	m_pEntity->transform.pos.y += m_palletSpeed * dt * m_dir.y;
+	m_pEntity->transform.pos.z += m_palletSpeed * dt * m_dir.z;
+
+	Deceleration(dt);
+	Bounce();
+	OnBatHit();
+}
+
+void Pallet::Destroy()
+{
+	m_pEntity = cpuEngine.Release(m_pEntity);
+}
+
+void Pallet::Deceleration(float dt)
+{
+	if (m_palletSpeed > 0.1f) {
+		m_palletSpeed -= (m_palletSpeed * dt);
+	}
+	else {
+		m_palletSpeed = 0;
+	}
+}
+
+void Pallet::Bounce()
+{
+	Ground& pGround = Ground::GetInstance();
+	
+	for (int i = 0; i < pGround.m_wall.size() - 1; i++) 
+	{
+		if (IsCollindingX(pGround.m_wall[i])) {
+			m_dir.x *= -1;
+		}
+		if (IsCollindingZ(pGround.m_wall[i])) {
+			m_dir.z *= -1;
+		}
+	}
+}
+
+void Pallet::OnBatHit()
+{
+}
+
+bool Pallet::IsCollindingX(cpu_entity* _entity)
+{
+	App& pApp = App::GetInstance();
+
+	return pApp.GetDistanceZ(GetEntity(), _entity) <= 0.0f;
+}
+
+bool Pallet::IsCollindingZ(cpu_entity* _entity)
+{
+	App& pApp = App::GetInstance();
+
+	return pApp.GetDistanceX(GetEntity(), _entity) <= 0.0f;
+}

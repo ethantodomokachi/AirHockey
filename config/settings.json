@@ -1,0 +1,32 @@
+{
+    "projects": {
+        "2D0838DE-7C6D-4739-065D-0A8318CD3F6A": {
+            "config-debug": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": [],
+            "dependents": [],
+            "name": "AirHockey",
+            "property-lib": false,
+            "property-pch": true,
+            "property-vcpkg": false,
+            "property-window": true
+        }
+    },
+    "projects_name_to_guid": {
+        "AirHockey": "2D0838DE-7C6D-4739-065D-0A8318CD3F6A"
+    },
+    "solution_guid": "710E4078-321D-6A32-54D3-6E841E253CD3",
+    "solution_name": "Pipeline3D-Lea-Ethan",
+    "startup_project": "",
+    "version": "2.0"
+}
